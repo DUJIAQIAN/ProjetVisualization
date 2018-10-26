@@ -10,15 +10,19 @@
 <body>
     <script>
         var donnees={};
-        Papa.parse('./objets-trouves-restitution.csv', {
+        Papa.parse('./data_v3.csv', {
                     download: true,
                     complete: function(results) {
                         var data = results.data;
                         for (var i = 1; i < 3 ; i++) {
                             var item = data[i];
                             console.log(item);
-                           var annee = item[0].slice(0,4)
+                           var annee = item[0].slice(0,4);
+                           var mois = item[0].slice(5,7);
                            console.log(annee);
+                         if (annee=='2018'){
+                             
+                         }
                         }
                     }
         });
