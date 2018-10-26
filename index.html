@@ -1,12 +1,27 @@
 <! doctype html >
  <html>
      <head>
-        <meta charset =" UTF-8 ">
-        <title > index </title >
-        <script src ="./lib/d3.js"></script>
-     </head>
-    
-     <body>
+    <meta charset=" UTF-8 ">
+    <title> index </title>
+    <script src="./lib/d3.js/d3.js"></script>
+    <script src="./lib/PapaParse-4.6.0/papaparse.min.js"></script>
+</head>
 
-     </body>
+<body>
+    <script>
+        var donnees={};
+        Papa.parse('./objets-trouves-restitution.csv', {
+                    download: true,
+                    complete: function(results) {
+                        var data = results.data;
+                        for (var i = 1; i < 3 ; i++) {
+                            var item = data[i];
+                            console.log(item);
+                           var annee = item[0].slice(0,4)
+                           console.log(annee);
+                        }
+                    }
+        });
+    </script>
+</body>
 </html>
