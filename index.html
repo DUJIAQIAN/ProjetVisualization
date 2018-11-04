@@ -1,6 +1,7 @@
 <! doctype html >
- <html>
-     <head>
+<html>
+
+<head>
     <meta charset=" UTF-8 ">
     <title> index </title>
     <script src="./lib/d3.js/d3.js"></script>
@@ -8,24 +9,20 @@
 </head>
 
 <body>
-    <script>
-        var donnees={};
-        Papa.parse('./data_v4.csv', {
-                    download: true,
-                    complete: function(results) {
-                        var data = results.data;
-                        for (var i = 1; i < 3 ; i++) {
-                            var item = data[i];
-                            console.log(item);
-                           var annee = item[0].slice(0,4);
-                           var mois = item[0].slice(5,7);
-                           console.log(annee);
-                         if (annee=='2018'){
-                             
-                         }
-                        }
-                    }
-        });
-    </script>
+<script src="traitement.js"></script>
+<script>
+    // Organiser le structure de données
+    var annee = ["2013", "2014", "2015", "2016", "2017", "2018"];
+    var mois = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+    Papa.parse('./data_v4.csv', {
+        download: true,
+        complete: function(results) {
+            var data = results.data;
+            var reData = traitement(data)["2018"];
+            console.log(reData);
+        }
+    });
+</script>
 </body>
+
 </html>
