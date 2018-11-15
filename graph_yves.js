@@ -1,101 +1,92 @@
-data =[
+data = [
     {
-        gare:"rennes",
-        nbr:45
+        gare: "rennes",
+        value: 45
     },
     {
-        gare:"bordeaux",
-        nbr:50
+        gare: "bordeaux",
+        value: 50
     },
     {
-        gare:"paris st lazare",
-        nbr:60
+        gare: "paris st lazare",
+        value: 60
     },
     {
-        gare:"lourdes",
-        nbr:100
+        gare: "lourdes",
+        value: 100
     },
     {
-        gare:"rouen",
-        nbr:50
+        gare: "rouen",
+        value: 50
     },
     {
-        gare:"mont parnasse",
-        nbr:60
+        gare: "mont parnasse",
+        value: 60
     },
     {
-        gare:"caen",
-        nbr:50
+        gare: "caen",
+        value: 50
     },
     {
-        gare:"montpellier",
-        nbr:40
+        gare: "montpellier",
+        value: 40
     },
     {
-        gare:"chambery",
-        nbr:50
+        gare: "chambery",
+        value: 50
     },
     {
-        gare:"lorient",
-        nbr:60
+        gare: "lorient",
+        value: 60
     }
 ];
 
-var margin = {top: 20, right: 20, bottom: 70, left: 40},
-    width = 600 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+var height = 500;
+var width = 1000;
+var margin = ({top: 20, right: 0, bottom: 30, left: 40});
 
-var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+let svg = d3.select('body').append('svg');
+        svg.attr('width', width)
+            .attr('height', height);
 
-var y = d3.scale.linear().range([height, 0]);
+var x = d3.scaleBand()
+    .domain(data.map(d => d.gare))
+    .range([margin.left, width - margin.right])
+    .padding(0.1);
 
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
+var y = d3.scaleLinear()
+    .domain([0, d3.max(data, d => d.value)]).nice()
+    .range([height - margin.bottom, margin.top]);
 
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left")
-    .ticks(10);
+var xAxis = g => g
+.attr("transform", `translate(0,${height - margin.bottom})`)
+.call(d3.axisBottom(x)
+    .tickSizeOuter(0));
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", 
-          "translate(" + margin.left + "," + margin.top + ")");
-	
-  x.domain(data.map(function(d) { return d.gare; }));
-  y.domain([0, d3.max(data, function(d) { return d.nbr; })]);
-
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis)
-    .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", "-.55em")
-      .attr("transform", "rotate(-90)" );
-
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("nbr objets trouvés");
-
-  svg.selectAll("bar")
-      .data(data)
-    .enter().append("rect")
-      .style("fill", "steelblue")
-      .attr("x", function(d) { return x(d.gare); })
-      .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.nbr); })
-      .attr("height", function(d) { return height - y(d.nbr); });
-   
+var yAxis = g => g
+.attr("transform", `translate(${margin.left},0)`)
+.call(d3.axisLeft(y))
+.call(g => g.select(".domain").remove());
 
 
+
+chart = function(data){
+  
+    svg.append("g")
+        .attr("fill", "steelblue")
+      .selectAll("rect").data(data).enter().append("rect")
+        .attr("x", d => x(d.gare))
+        .attr("y", d => y(d.value))
+        .attr("height", d => y(0) - y(d.value))
+        .attr("width", x.bandwidth());
+    
+    svg.append("g")
+        .call(xAxis);
+    
+    svg.append("g")
+        .call(yAxis);
+    
+    return svg.node();
+  }
+
+chart(data);
