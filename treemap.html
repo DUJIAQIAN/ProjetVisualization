@@ -1,0 +1,126 @@
+<! doctype html >
+<html>
+
+<head>
+    <meta charset=" UTF-8 ">
+    <title> Treemap </title>
+    <script src="./lib/d3.js/d3.js"></script>
+    <script src="./lib/PapaParse-4.6.0/papaparse.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+<script src="traitement.js"></script>
+<script>
+   //Déclarer les lists annee, mois et le dictionary type_objet
+    var annee = ["2013", "2014", "2015", "2016", "2017", "2018"],
+        mois = [ "10", "11", "12","01", "02", "03", "04", "05", "06", "07", "08", "09"],
+        reData;
+    var type_objet={"Divers":0,
+                    "Bagagerie: sacs, valises, cartables":0,
+                    "Clés, porte-clés, badge magnétique":0,
+                    "Bijoux, montres":0,
+                    "Appareils électroniques, informatiques, appareils photo":0, 
+                    "Pièces d'identités et papiers personnels":0,
+                    "Vêtements, chaussures":0,
+                    "Porte-monnaie / portefeuille, argent, titres":0,
+                    "Articles de sport, loisirs, camping":0,
+                    "Vélos, trottinettes, accessoires 2 roues":0,
+                    "Optique":0,
+                    "Parapluies":0,
+                    "Livres, articles de papéterie":0,
+                    "Articles médicaux":0,
+                    "Articles d'enfants, de puériculture":0,
+                    "Instruments de musique":0
+                   }
+    //Lire le fichier data_v4.csv par Papa Pharse(CSV parser en JavaScript)
+    var a= Papa.parse('./data_v4.csv', {
+        download: true,
+        complete: function(results) {
+            var data = results.data;
+            //Utiliser la fontion traitement pour organiser le structure de données
+            reData = traitement(data,mois,annee)["2018"];  
+            console.log(reData);
+           
+             var children=[];//le data set pour créer le treemap
+             var keys=Object.keys(reData);//la list de keys(mois) de redata 
+             var types=Object.keys(type_objet);
+             //Calculer nombre d'objets trouvés par type d'objets
+             for(var i=0;i<keys.length;i++){
+                for(var j=0;j<reData[keys[i]].length;j++){
+                        types.forEach(v=>{ if( v == reData[keys[i]][j]["type"]);
+                        type_objet[reData[keys[i]][j]["type"]]++;                   
+                  }); 
+                }
+            }
+            //mettre des donées de type_objet à children avec value et name
+            for(var k=0;k<types.length;k++){
+                children.push({value:type_objet[types[k]], name:types[k]});
+            }
+            console.log(children);
+            
+            /*TreeMap*/
+            let height = 500,
+                width = 1000;
+
+            let svg = d3.select('body').append('svg');
+                svg.attr('width', width)
+                    .attr('height', height);
+    
+            var root =  { children };
+    
+            var treemap = d3.layout.treemap().size([width,height]);
+            var nodes = treemap.nodes(root);
+
+            const delta = 360 / children.length; 
+            function calculerCouleur(d, i) { 
+                return d3.hsl(delta*i, 0.7, 0.6);
+            };
+          //créer les rectangles en fontion de la proposition des values dans children
+            var rect = d3.select("svg").selectAll("rect");
+            rect.data(children).enter().append("rect")
+                .attr({ 
+                        x: function(it) { return it.x; }, 
+                        y: function(it) { return it.y; }, 
+                        width: function(it) { return it.dx; }, 
+                        height: function(it) { return it.dy; }, 
+                        fill: calculerCouleur, stroke: "black",
+                    })
+            .append("title")
+            .attr("font-size",15)
+            .text(function(d){return `Type: ${d.name}` + "\n " + `Numbre d'objets trouvés: ${d.value}`})
+           
+            
+            //text sur chaque rectangle
+            var text = d3.select("svg").selectAll("text")
+            text.data(children).enter().append("text")
+                .attr({
+                        x: function(it) { return it.x+it.dx/2; }, 
+                        y: function(it) { return it.y+it.dy/2; }, 
+                        "text-anchor": "middle", // met au milieu horizontal
+                        "dominant-baseline": "central", // met au milieu normal
+                        "font-size":15
+                })
+                .text(function(d){
+                        if(d.dx<120){return d.name.substring(0,5)+"..."}
+                        else{return d.name.substring(0,10)+"...";}
+                });
+            
+             text.data(children).enter().append("text")
+            .attr({
+                        x: function(it) { return it.x+it.dx/2; }, 
+                        y: function(it) { return it.y+it.dy/2 + 15; }, 
+                        "text-anchor": "middle", // met au milieu horizontal
+                        "dominant-baseline": "central", // met au milieu normal
+                        "font-size":12
+                })
+            .text(function(d){
+                        return d.value;
+                });
+      
+        }
+    });
+</script>
+</body>
+
+</html>
