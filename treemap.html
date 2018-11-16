@@ -6,7 +6,7 @@
     <title> Treemap </title>
     <script src="./lib/d3.js/d3.js"></script>
     <script src="./lib/PapaParse-4.6.0/papaparse.min.js"></script>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
 
 <body>
@@ -33,94 +33,131 @@
                     "Articles d'enfants, de puériculture":0,
                     "Instruments de musique":0
                    }
+    
+    //Récuperer année selectée par utilisateur
+function getIndex(){
+    var s=document.getElementById("mySelect");
+    var select_value=s.options[s.selectedIndex].value; 
+    
+    
     //Lire le fichier data_v4.csv par Papa Pharse(CSV parser en JavaScript)
     var a= Papa.parse('./data_v4.csv', {
         download: true,
+        header: true,
+        dynamicTyping: true,
+        fastmode:true,
         complete: function(results) {
             var data = results.data;
-            //Utiliser la fontion traitement pour organiser le structure de données
-            reData = traitement(data,mois,annee)["2018"];  
-            console.log(reData);
-           
-             var children=[];//le data set pour créer le treemap
-             var keys=Object.keys(reData);//la list de keys(mois) de redata 
-             var types=Object.keys(type_objet);
-             //Calculer nombre d'objets trouvés par type d'objets
-             for(var i=0;i<keys.length;i++){
-                for(var j=0;j<reData[keys[i]].length;j++){
-                        types.forEach(v=>{ if( v == reData[keys[i]][j]["type"]);
-                        type_objet[reData[keys[i]][j]["type"]]++;                   
-                  }); 
-                }
-            }
-            //mettre des donées de type_objet à children avec value et name
-            for(var k=0;k<types.length;k++){
-                children.push({value:type_objet[types[k]], name:types[k]});
-            }
-            console.log(children);
+            console.log(data);
             
-            /*TreeMap*/
-            let height = 500,
-                width = 1000;
-
-            let svg = d3.select('body').append('svg');
-                svg.attr('width', width)
-                    .attr('height', height);
-    
-            var root =  { children };
-    
-            var treemap = d3.layout.treemap().size([width,height]);
-            var nodes = treemap.nodes(root);
-
-            const delta = 360 / children.length; 
-            function calculerCouleur(d, i) { 
-                return d3.hsl(delta*i, 0.7, 0.6);
-            };
-          //créer les rectangles en fontion de la proposition des values dans children
-            var rect = d3.select("svg").selectAll("rect");
-            rect.data(children).enter().append("rect")
-                .attr({ 
-                        x: function(it) { return it.x; }, 
-                        y: function(it) { return it.y; }, 
-                        width: function(it) { return it.dx; }, 
-                        height: function(it) { return it.dy; }, 
-                        fill: calculerCouleur, stroke: "black",
-                    })
-            .append("title")
-            .attr("font-size",15)
-            .text(function(d){return `Type: ${d.name}` + "\n " + `Numbre d'objets trouvés: ${d.value}`})
-           
-            
-            //text sur chaque rectangle
-            var text = d3.select("svg").selectAll("text")
-            text.data(children).enter().append("text")
-                .attr({
-                        x: function(it) { return it.x+it.dx/2; }, 
-                        y: function(it) { return it.y+it.dy/2; }, 
-                        "text-anchor": "middle", // met au milieu horizontal
-                        "dominant-baseline": "central", // met au milieu normal
-                        "font-size":15
-                })
-                .text(function(d){
-                        if(d.dx<120){return d.name.substring(0,5)+"..."}
-                        else{return d.name.substring(0,10)+"...";}
-                });
-            
-             text.data(children).enter().append("text")
-            .attr({
-                        x: function(it) { return it.x+it.dx/2; }, 
-                        y: function(it) { return it.y+it.dy/2 + 15; }, 
-                        "text-anchor": "middle", // met au milieu horizontal
-                        "dominant-baseline": "central", // met au milieu normal
-                        "font-size":12
-                })
-            .text(function(d){
-                        return d.value;
-                });
-      
+//            let parseDate = d3.time.format("%Y").parse;
+            let neste = d3.nest()
+            .key(function(d){return d.Annee})
+            .key(function(d){return d.Type})
+            .entries(data);
+            console.log(neste);
+//            //Utiliser la fontion traitement pour organiser le structure de données
+//            reData = traitement(data,mois,annee)[select_value];  
+//            console.log(reData);
+//          
+//             var children=[];//le data set pour créer le treemap
+//             var keys=Object.keys(reData);//la list de keys(mois) de redata 
+//             var types=Object.keys(type_objet);
+//             //Calculer nombre d'objets trouvés par type d'objets
+//             for(var i=0;i<keys.length;i++){
+//                for(var j=0;j<reData[keys[i]].length;j++){
+//                        types.forEach(v=>{ if( v == reData[keys[i]][j]["type"]);
+//                        type_objet[reData[keys[i]][j]["type"]]++;                   
+//                  }); 
+//                }
+//            }
+//            //mettre des donées de type_objet à children avec value et name
+//            for(var k=0;k<types.length;k++){
+//                children.push({value:type_objet[types[k]], name:types[k]});
+//            }
+//            console.log(children);
+//            
+//            /*TreeMap*/
+//            let height = 500,
+//                width = 1000;
+//
+//            let svg = d3.select('body').append('svg');
+//                svg.attr('width', width)
+//                    .attr('height', height);
+//    
+//            var root =  { children };
+//    
+//     
+//            var treemap = d3.layout.treemap().size([width,height]);
+//            var nodes = treemap.nodes(root);
+//            console.log(nodes);
+//            const delta = 360 / children.length; 
+//            function calculerCouleur(d, i) { 
+//                return d3.hsl(delta*i, 0.7, 0.6);
+//            };
+//          //créer les rectangles en fontion de la proposition des values dans children
+//            var rect = d3.select("svg").selectAll("rect");
+//            rect.data(children).enter().append("rect")
+//                .attr({ 
+//                        x: function(it) { return it.x; }, 
+//                        y: function(it) { return it.y; }, 
+//                        width: function(it) { return it.dx; }, 
+//                        height: function(it) { return it.dy; }, 
+//                        fill: calculerCouleur, stroke: "black",
+//                    })
+//            .append("title")
+//            .attr("font-size",15)
+//            .text(function(d){return `Type: ${d.name}` + "\n " + `Numbre d'objets trouvés: ${d.value}`})
+//           
+//            
+//            //text sur chaque rectangle
+//            var text = d3.select("svg").selectAll("text")
+//            text.data(children).enter().append("text")
+//                .attr({
+//                        x: function(it) { return it.x+it.dx/2; }, 
+//                        y: function(it) { return it.y+it.dy/2; }, 
+//                        "text-anchor": "middle", // met au milieu horizontal
+//                        "dominant-baseline": "central", // met au milieu normal
+//                        "font-size":15
+//                })
+//                .text(function(d){
+//                        if(d.dx<120){return d.name.substring(0,5)+"..."}
+//                        else{return d.name.substring(0,10)+"...";}
+//                });
+//            
+//             text.data(children).enter().append("text")
+//            .attr({
+//                        x: function(it) { return it.x+it.dx/2; }, 
+//                        y: function(it) { return it.y+it.dy/2 + 15; }, 
+//                        "text-anchor": "middle", // met au milieu horizontal
+//                        "dominant-baseline": "central", // met au milieu normal
+//                        "font-size":12
+//                })
+//            .text(function(d){
+//                        return d.value;
+//                });
+//      
         }
     });
+}
 </script>
+  
+    <form name="form1" id="form1">
+Selecter une année:
+<select id="mySelect" name="mySelect">
+<option value="2013">2013</option>
+<option value="2014" >2014</option>
+<option value="2015">2015</option>
+<option value="2016">2016</option>
+<option value="2017">2017</option>
+<option value="2018">2018</option>
+</select>
+<br /><br />
+<input type="button" onclick="getIndex()"
+value="Submit">
+</form>
+
+    <div id="treemap"></div>
 </body>
 
 </html>
