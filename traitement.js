@@ -1,5 +1,5 @@
 // Organiser le structure de données
-function traitement(data) {
+function traitement(data,mois,annee) {
     var donnees = {};
     for (var j = 0; j < annee.length; j++) {
         var objMois = {};
