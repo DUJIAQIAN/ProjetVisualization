@@ -57,18 +57,24 @@
 
         Papa.parse('./data_v4.csv', {
             download: true,
+            header: true,
+            dynamicTyping: true,
+            fastmode:true,
             complete: function(results) {
                 var data = results.data;
-                var reData = traitement(data)["2015"];
+                console.log(data);
 
+
+
+
+
+/*
                 var nbObjTrouve = [];
-                console.log(reData);
 
 
-
-                var reData_size = Object.keys(reData).length;
-                for (i=0; i < reData_size ; i++){
-                    nbObjTrouve.push( {mois : mois[i], nbObjet: reData[mois[i]].length });
+                var data_size = Object.keys(data).length;
+                for (i=0; i < data_size ; i++){
+                    nbObjTrouve.push( {mois : mois[i], nbObjet: data[mois[i]].length });
 
                 }
                 
@@ -125,7 +131,7 @@
                     .transition()
                         .duration(2000)
                         .attr("d", area);
-
+*/
 
 
                 
