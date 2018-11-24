@@ -29,35 +29,28 @@ function traitement(data) {
 }
 
 //traitement des données pour qu'elles soient exploitables par le bar chart de Yves
-function traitementDonneesBarChart(data){
-    var length = Object.keys(data).length;
-    var chartData_v1={};
-    var chartData_v2=[];
+function computeDataBarchart(data, year) {
+    var index=-1, i=0;
+    var chartData;
+    var nestedData;
 
     //enregistrer les gares et leurs nombres d'objets trouvés dans chartData
-    for( let key in data){
-        data[key].forEach(element => {
-            let gare = element["gare"];
-            if(!chartData_v1[gare])
-                chartData_v1[gare] = 1;
-            else
-                chartData_v1[gare]+=1;           
-        });
-    }
-    
-    //mettre chartData sous une forme utilisable par le graphe
-    for(let key in chartData_v1){
-        chartData_v2.push({
-            gare: key,
-            value: chartData_v1[key]
-        });
+    var nestedData = d3.nest()
+        .key(function (d) { return d.Annee; })
+        .key(function (d) { return d.Gare; })
+        .rollup(function(v){return v.length})
+        .entries(data);
+
+    while(i<nestedData.length && index==-1){
+        if(nestedData[i].key==year)
+            index = i;
+        i++;
     }
 
-    //ordonner chartData par ordre décroissant du nombres d'objets
-    var byValue = chartData_v2.slice(0);
-    byValue.sort(function(a,b) {
-        return b.value - a.value;
-    });
+    chartData = nestedData[index].values
+                .sort(function(a, b) {
+                    return b.value - a.value;
+                });
 
-    return byValue;
+    return chartData;
 }
