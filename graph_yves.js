@@ -1,42 +1,42 @@
 var data = [
     {
-        gare: "rennes",
+        key: "rennes",
         value: 45
     },
     {
-        gare: "bordeaux",
+        key: "bordeaux",
         value: 50
     },
     {
-        gare: "paris st lazare",
+        key: "paris st lazare",
         value: 60
     },
     {
-        gare: "lourdes",
+        key: "lourdes",
         value: 100
     },
     {
-        gare: "rouen",
+        key: "rouen",
         value: 50
     },
     {
-        gare: "mont parnasse",
+        key: "mont parnasse",
         value: 60
     },
     {
-        gare: "caen",
+        key: "caen",
         value: 50
     },
     {
-        gare: "montpellier",
+        key: "montpellier",
         value: 40
     },
     {
-        gare: "chambery",
+        key: "chambery",
         value: 50
     },
     {
-        gare: "lorient",
+        key: "lorient",
         value: 60
     }
 ];
