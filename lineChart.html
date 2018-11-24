@@ -41,20 +41,12 @@
 
 <body>
 
-    <script src="traitement.js"></script>
-
-    <select>
-        <option value="volvo">Volvo</option>
-    </select>
     <!-- Load in the d3 library -->
     <script>
         // Organiser le structure de données
         var annee = ["2013", "2014", "2015", "2016", "2017", "2018"];
-        var mois = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-        console.log(annee.length);
- 
+        var mois = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]; 
         
-
         Papa.parse('./data_v4.csv', {
             download: true,
             header: true,
@@ -62,128 +54,38 @@
             fastmode:true,
             complete: function(results) {
                 var data = results.data;
-                console.log(data);
-
-
-
-
-
-/*
-                var nbObjTrouve = [];
-
-
-                var data_size = Object.keys(data).length;
-                for (i=0; i < data_size ; i++){
-                    nbObjTrouve.push( {mois : mois[i], nbObjet: data[mois[i]].length });
-
-                }
-                
-                nbObjTrouve = d3.set(nbObjTrouve, function(d){return d.nbObjet, d.mois});
-                console.log(nbObjTrouve);
-
-    
-                
-                var maxDeclaration = d3.max(nbObjTrouve[0].nbObjet, function(d){ return d; });
+                //console.log(data);
                 
 
-                // 2. Use the margin convention practice 
-                var margin = {top: 50, right: 50, bottom: 50, left: 50}
-                , width = window.innerWidth - margin.left - margin.right // Use the window's width 
-                , height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
+                let nest_annee = d3.nest()
+                    .key(function(d){return d.Annee})
+                    .object(data);
+
+                let nest_mois = d3.nest()
+                    .key(function(d){return d.Date})
+                    .rollup(function(v) { return v.length; })
+                    .entries(nest_annee["2018"]);
+
+                console.log(nest_mois);
+
+
+                var list = d3.select("#choixAnnee").append("select")
+
+                list.selectAll("option")
+                .data(nest_annee)
+                .enter()
+                .append("option")
+                .attr("value", function(d) {return d.key;})
+                .text(function(d) {
+                return d.key; });
                 
 
-                var moisName = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août",  "Aeptembre", "Octobre", "Novembre", "Décembre"];
-                
-                // 1. Add the SVG to the page and employ #2
-                var svg = d3.select("body").append("svg")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-
-
-                var xArea = d3.scaleBand()
-                    .range([1, 12])
-                    .padding(0.1);
-                var yArea = d3.scaleLinear()
-                    .range([100, 0]);
-
-                xArea.domain(nbObjTrouve.map(function(d) { return d.mois; }));
-                yArea.domain(d3.extent(nbObjTrouve, function(d) { return d.nbObjet; }));
-
-                var areaStart = d3.area()
-                    .x(function(d) { return xArea(d.mois); })
-                    .y0(100)
-                    .y1(function(d) { return 100; });
-
-                var area = d3.area()
-                    .x(function(d) { return xArea(d.mois); })
-                    .y0(100)
-                    .y1(function(d) { return yArea(d.nbObjet); });
-
-                var areaPath = svg.append("path")
-                    .datum(data)
-                    .attr("class", "area")
-                    .attr("transform", "translate(150, 0)")
-                    .attr("d", areaStart)
-                    .transition()
-                        .duration(2000)
-                        .attr("d", area);
-*/
-
-
-                
-/*
-                var xScale = d3.scaleLinear()
-                    .domain([1, 12])
-                    .range([0,width]);
-
-                var yScale = d3.scaleLinear()
-                            .domain([ 0,14000])
-                            .range([height,0]);
-
-                // 7. d3's line generator
-                var line = d3.line()
-                    .x(function(d) { return xScale(d.mois); }) // set the x values for the line generator
-                    .y(function(d) { return yScale(d.nbObjet); }) // set the y values for the line generator 
-                    .curve(d3.curveMonotoneX) // apply smoothing to the line
-
-
-
-                // 3. Call the x axis in a group tag
-                svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
-
-                // 4. Call the y axis in a group tag
-                svg.append("g")
-                    .attr("class", "y axis")
-                    .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
-
-                // 9. Append the path, bind the data, and call the line generator 
-                var path = svg.append("path")
-                    .datum(nbObjTrouve) // 10. Binds data to the line 
-                    .attr("class", "line") // Assign a class for styling 
-                    .attr("d", line)
-                    .style("fill", "none")
-                    .style("stroke-width");
-
-                var totalLength = path.node().getTotalLength();
-
-                path
-                .attr("stroke-dasharray", totalLength + " " + totalLength)
-                .attr("stroke-dashoffset", totalLength)
-                .transition()
-                    .duration(2000)
-                    .ease("linear")
-                    .attr("stroke-dashoffset", 0);
-
-*/
 
             }
         });
     </script>
+
+    <div id="choixAnnee"></div>
 </body> 
