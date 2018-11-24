@@ -49,13 +49,13 @@ let svg = d3.select('body').append('svg');
 svg.attr('width', width)
     .attr('height', height);
 
-chart = function (barData,barsAmount) {
+barChart = function (barData, barsNumber) {
 
-    //récupération des barsAmount premier éléments de l'array
-    data = barData.slice(0,barsAmount);
+    //récupération des barsNumber premier éléments de l'array
+    data = barData.slice(0, barsNumber);
 
     var x = d3.scaleBand()
-        .domain(data.map(d => d.gare))
+        .domain(data.map(d => d.key))
         .range([margin.left, width - margin.right])
         .padding(0.1);
 
@@ -74,21 +74,23 @@ chart = function (barData,barsAmount) {
         .call(g => g.select(".domain").remove());
 
     svg.append("g")
+        .call(xAxis);
+
+    svg.append("g")
+        .call(yAxis);
+
+    svg.append("g")
         .attr("fill", "steelblue")
         .selectAll("rect")
         .data(data)
         .enter()
         .append("rect")
-        .attr("x", d => x(d.gare))
+        .attr("x", d => x(d.key))
         .attr("y", d => y(d.value))
         .attr("height", d => y(0) - y(d.value))
         .attr("width", x.bandwidth());
 
-    svg.append("g")
-        .call(xAxis);
-
-    svg.append("g")
-        .call(yAxis);
+ 
 
     return svg.node();
 }
