@@ -45,14 +45,18 @@ var height = 500;
 var width = 1000;
 var margin = ({ top: 20, right: 0, bottom: 30, left: 40 });
 
-let svg = d3.select('#barchart').append('svg');
-svg.attr('width', width)
-    .attr('height', height);
-
 barChart = function (barData, barsNumber) {
 
     //récupération des barsNumber premier éléments de l'array
     data = barData.slice(0, barsNumber);
+
+    d3.select('#barchart svg')
+        .remove();
+
+    let svg = d3.select('#barchart')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height);
 
     var x = d3.scaleBand()
         .domain(data.map(d => d.key))
@@ -66,7 +70,7 @@ barChart = function (barData, barsNumber) {
     var xAxis = g => g
         .attr("transform", `translate(0,${height - margin.bottom})`)
         .call(d3.axisBottom(x)
-            .tickSizeOuter(0));
+        .tickSizeOuter(0));
 
     var yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
