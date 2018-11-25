@@ -1,0 +1,51 @@
+<!Doctype html >
+<html>
+
+<head>
+    <meta charset=" UTF-8 ">
+    <title> index </title>
+    <script src="./lib/d3.js/d3.js"></script>
+    <script src="./lib/PapaParse-4.6.0/papaparse.min.js"></script>
+
+</head>
+
+<body>
+    <form name="form1" id="form1">
+        Selectionner une année:
+        <select id="mySelect" name="mySelect">
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+        </select>
+        <br /><br />
+        <input type="button" onclick="getIndex()" value="Submit">
+    </form>
+
+    <div id="barchart"></div>
+
+    <script src="traitement.js"></script>
+    <script src="graph_yves.js"></script>
+    <script>
+        function getIndex() {
+            var s = document.getElementById("mySelect");
+            var select_value = s.options[s.selectedIndex].value;
+
+            Papa.parse('./data_v4.csv', {
+                download: true,
+                header: true,
+                complete: function (results) {
+                    var data = results.data;
+                    var chartData = computeDataBarchart(data, select_value);
+                    console.log(chartData);
+                    barChart(chartData, 10);
+                }
+            });
+        } 
+        getIndex();
+    </script>
+</body>
+
+</html>
