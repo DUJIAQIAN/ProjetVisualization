@@ -6,6 +6,7 @@
 
   <body>
     <div id="chart"></div>
+    
   </body>
 
 <script>
@@ -67,6 +68,7 @@ var xScale = d3.scaleTime()
 var yScale = d3.scaleLinear()
   .domain([0, d3.max(nest_mois, d => d.value)])
   .range([height-margin, 0]);
+
 
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -140,7 +142,9 @@ svg.append("g")
   .attr("transform", "rotate(-90)")
   .attr("fill", "#000")
   .text("Déclaration de perte");
+
   }
+
 });
 </script>
 </html>
