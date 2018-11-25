@@ -1,0 +1,102 @@
+<script>
+const margin = {top: 50, right: 30, bottom: 30, left: 60},
+    width = document.getElementById("container").offsetWidth * 0.95 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+const parseTime = d3.timeParse("%d/%m/%Y");
+const dateFormat = d3.timeFormat("%d/%m/%Y");
+
+const x = d3.scaleTime()
+    .range([0, width]);
+
+const y = d3.scaleLinear()
+    .range([height, 0]);
+    
+const line = d3.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.close); });
+
+const area = d3.area()
+    .x(function(d) { return x(d.date); })
+    .y0(height)
+    .y1(function(d) { return y(d.close); });
+
+// Attention ici il faut que le body possède déjà un DIV dont l'ID est chart
+const svg = d3.select("#chart").append("svg")
+    .attr("id", "svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.append("text")
+    .attr("x", (width / 2))             
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "middle")
+    .style("fill", "#5a5a5a")
+    .style("font-family", "Raleway")
+    .style("font-weight", "300")
+    .style("font-size", "24px")
+    .text("Cours journalier de l'or depuis 2001");
+
+function addTooltip() {
+    // Création d'un groupe qui contiendra tout le tooltip plus le cercle de suivi
+    var tooltip = svg.append("g")
+        .attr("id", "tooltip")
+        .style("display", "none");
+    
+    // Le cercle extérieur bleu clair
+    tooltip.append("circle")
+        .attr("fill", "#CCE5F6")
+        .attr("r", 10);
+
+    // Le cercle intérieur bleu foncé
+    tooltip.append("circle")
+        .attr("fill", "#3498db")
+        .attr("stroke", "#fff")
+        .attr("stroke-width", "1.5px")
+        .attr("r", 4);
+    
+    // Le tooltip en lui-même avec sa pointe vers le bas
+    // Il faut le dimensionner en fonction du contenu
+    tooltip.append("polyline")
+        .attr("points","0,0 0,40 55,40 60,45 65,40 120,40 120,0 0,0")
+        .style("fill", "#fafafa")
+        .style("stroke","#3498db")
+        .style("opacity","0.9")
+        .style("stroke-width","1")
+        .attr("transform", "translate(-60, -55)");
+    
+    // Cet élément contiendra tout notre texte
+    var text = tooltip.append("text")
+        .style("font-size", "13px")
+        .style("font-family", "Segoe UI")
+        .style("color", "#333333")
+        .style("fill", "#333333")
+        .attr("transform", "translate(-50, -40)");
+    
+    // Element pour la date avec positionnement spécifique
+    text.append("tspan")
+        .attr("dx", "-5")
+        .attr("id", "tooltip-date");
+    
+    // Positionnement spécifique pour le petit rond	bleu
+    text.append("tspan")
+        .style("fill", "#3498db")
+        .attr("dx", "-60")
+        .attr("dy", "15")
+        .text("●");
+    
+    // Le texte "Cours : "
+    text.append("tspan")
+        .attr("dx", "5")
+        .text("Cours : ");
+    
+    // Le texte pour la valeur de l'or à la date sélectionnée
+    text.append("tspan")
+        .attr("id", "tooltip-close")
+        .style("font-weight", "bold");
+    
+    return tooltip;
+}
+</script>
