@@ -64,7 +64,8 @@ barChart = function (barData, barsNumber) {
         .padding(0.1);
 
     var y = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.value)]).nice()
+        .domain([0, d3.max(data, d => d.value)])
+        .nice()
         .range([height - margin.bottom, margin.top]);
 
     var xAxis = g => g
@@ -75,7 +76,8 @@ barChart = function (barData, barsNumber) {
     var yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y))
-        .call(g => g.select(".domain").remove());
+        .call(g => g.select(".domain")
+        .remove());
 
     svg.append("g")
         .call(xAxis);
@@ -90,11 +92,17 @@ barChart = function (barData, barsNumber) {
         .enter()
         .append("rect")
         .attr("x", d => x(d.key))
+        .attr("y", d => y(0))
+        .attr("width", x.bandwidth())
+        .attr("height", 0)
+        .transition()
+        .duration(1500)
+        .ease(d3.easeElastic)
+        .delay(function (data, index) {
+            return index*200;
+        })
         .attr("y", d => y(d.value))
-        .attr("height", d => y(0) - y(d.value))
-        .attr("width", x.bandwidth());
-
- 
+        .attr("height", d => y(0) - y(d.value));
 
     return svg.node();
 }
