@@ -1,36 +1,5 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-
-<style type="text/css">
-    /* 13. Basic Styling with CSS */
-
-    /* Style the lines by removing the fill and applying a stroke */
-    .line {
-        fill: none;
-        stroke: #ffab00;
-        stroke-width: 3;
-    }
-    
-    .overlay {
-    fill: none;
-    pointer-events: all;
-    }
-
-    /* Style the dots by assigning a fill and stroke */
-    .dot {
-        fill: #ffab00;
-        stroke: #fff;
-    }
-    
-    .focus circle {
-    fill: none;
-    stroke: steelblue;
-    }
-
-</style>
-<!-- Body tag is where we will append our SVG and SVG objects-->
-
-
 <head>
         <meta charset=" UTF-8 ">
         <title> index </title>
@@ -40,13 +9,9 @@
 
 
 <body>
-
-    <!-- Load in the d3 library -->
     <script>
-        // Organiser le structure de données
-        var annee = ["2013", "2014", "2015", "2016", "2017", "2018"];
-        var mois = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]; 
-        
+
+        //Traitement des données 
         Papa.parse('./data_v4.csv', {
             download: true,
             header: true,
@@ -60,16 +25,17 @@
                 let nest_annee = d3.nest()
                     .key(function(d){return d.Annee})
                     .object(data);
+                //console.log(nest_annee)
 
                 let nest_mois = d3.nest()
                     .key(function(d){return d.Date})
                     .rollup(function(v) { return v.length; })
                     .entries(nest_annee["2018"]);
 
-                console.log(nest_mois);
+                //console.log(nest_mois);
 
 
-                var list = d3.select("#choixAnnee").append("select")
+                /*var list = d3.select("#choixAnnee").append("select")
 
                 list.selectAll("option")
                 .data(nest_annee)
@@ -77,15 +43,13 @@
                 .append("option")
                 .attr("value", function(d) {return d.key;})
                 .text(function(d) {
-                return d.key; });
+                return d.key; });*/
+
                 
-
-
-
-
             }
         });
     </script>
 
     <div id="choixAnnee"></div>
+    
 </body> 
