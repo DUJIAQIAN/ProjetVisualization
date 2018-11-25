@@ -29,7 +29,7 @@ function traitement(data) {
 }
 
 //traitement des données pour qu'elles soient exploitables par le bar chart de Yves
-function computeDataBarchart(data, year) {
+function computeDataBarChart(data, year) {
     var index=-1, i=0;
     var chartData;
     var nestedData;
@@ -53,4 +53,20 @@ function computeDataBarchart(data, year) {
                 });
 
     return chartData;
+}
+
+function computeDataLineChart(data, year){
+    let nest_annee = d3.nest()
+        .key(function(d){return d.Annee})
+        .object(data);
+
+    //console.log(nest_annee)
+
+    let nest_mois = d3.nest()
+        .key(function(d){return d.Date})
+        .sortKeys(d3.ascending)
+        .rollup(function(v) { return v.length; })
+        .entries(nest_annee[year]);
+
+    return nest_mois;
 }
