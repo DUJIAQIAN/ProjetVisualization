@@ -6,6 +6,7 @@
     <title> index </title>
     <script src="./lib/d3.js/d3.js"></script>
     <script src="./lib/PapaParse-4.6.0/papaparse.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 </head>
 
@@ -24,9 +25,13 @@
         <input type="button" onclick="getIndex()" value="Submit">
     </form>
 
-    <div id="barchart"></div>
-    <div id="linechart"></div>
-
+    <div class="container">
+        <div class="row">
+            <div id="linechart" class="col-lg-6"></div>
+            <div id="barchart" class="col-lg-6"></div>
+            
+        </div>
+    </div>
     <script src="traitement.js"></script>
     <script src="graph_bar.js"></script>
     <script src="graph_line.js"></script>

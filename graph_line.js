@@ -1,4 +1,4 @@
-var width_line = 1000;
+var width_line = 550;
 var height_line = 400;
 var margin_line = 50;
 var duration_line = 250;

@@ -1,5 +1,5 @@
 var height_bar = 400;
-var width_bar = 1000;
+var width_bar = 600;
 var margin_bar = ({ top: 20, right: 0, bottom: 30, left: 40 });
 
 barChart = function (barData, barsNumber) {
