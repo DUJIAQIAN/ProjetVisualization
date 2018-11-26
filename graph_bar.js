@@ -1,6 +1,6 @@
-var height = 400;
-var width = 1000;
-var margin = ({ top: 20, right: 0, bottom: 30, left: 40 });
+var height_bar = 400;
+var width_bar = 1000;
+var margin_bar = ({ top: 20, right: 0, bottom: 30, left: 40 });
 
 barChart = function (barData, barsNumber) {
 
@@ -10,39 +10,39 @@ barChart = function (barData, barsNumber) {
     d3.select('#barchart svg')
         .remove();
 
-    let svg = d3.select('#barchart')
+    let svg_bar = d3.select('#barchart')
             .append('svg')
-            .attr('width', width)
-            .attr('height', height);
+            .attr('width', width_bar)
+            .attr('height', height_bar);
 
     var x = d3.scaleBand()
         .domain(data.map(d => d.key))
-        .range([margin.left, width - margin.right])
+        .range([margin_bar.left, width_bar - margin_bar.right])
         .padding(0.1);
 
     var y = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.value)])
         .nice()
-        .range([height - margin.bottom, margin.top]);
+        .range([height_bar - margin_bar.bottom, margin_bar.top]);
 
     var xAxis = g => g
-        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .attr("transform", `translate(0,${height_bar - margin_bar.bottom})`)
         .call(d3.axisBottom(x)
         .tickSizeOuter(0));
 
     var yAxis = g => g
-        .attr("transform", `translate(${margin.left},0)`)
+        .attr("transform", `translate(${margin_bar.left},0)`)
         .call(d3.axisLeft(y))
         .call(g => g.select(".domain")
         .remove());
 
-    svg.append("g")
+    svg_bar.append("g")
         .call(xAxis);
 
-    svg.append("g")
+    svg_bar.append("g")
         .call(yAxis);
 
-    svg.append("g")
+    svg_bar.append("g")
         .attr("fill", "steelblue")
         .selectAll("rect")
         .data(data)
@@ -61,5 +61,5 @@ barChart = function (barData, barsNumber) {
         .attr("y", d => y(d.value))
         .attr("height", d => y(0) - y(d.value));
 
-    return svg.node();
+    return svg_bar.node();
 }
