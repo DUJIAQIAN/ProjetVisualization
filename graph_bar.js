@@ -2,17 +2,22 @@ var height_bar = 400;
 var width_bar = 600;
 var margin_bar = ({ top: 20, right: 0, bottom: 30, left: 40 });
 
-function addTooltipBarChart() {
+function addTooltipBarChart(svg) {
         
-    var tooltip = d3.select("#barchart")
-        .append("g")
-        .attr("id","tooltip")
-        .style("display","none")
-        .style("position","absolute")
-        .style("background", "#fafafa")
+    var tooltip = svg.append("g")
+            .attr("id", "tooltip")
+            .style("display", "none");
+        
+    // Le tooltip en lui-même avec sa pointe vers le bas
+    // Il faut le dimensionner en fonction du contenu
+    tooltip.append("polyline")
+        .attr("points","0,0 0,40 55,40 60,45 65,40 120,40 120,0 0,0")
+        .style("fill", "#fafafa")
+        .style("stroke","#3498db")
         .style("opacity","0.9")
-        .style("border","thin solid #3498db");
-    
+        .style("stroke-width","1")
+        .attr("transform", "translate(-60, -55)");
+
     // Cet élément contiendra tout notre texte
     var text = tooltip.append("text")
         .style("font-size", "13px")
@@ -22,7 +27,7 @@ function addTooltipBarChart() {
         .attr("transform", "translate(-50, -40)");
     
     // Element pour la gare
-    text.append("div")
+    text.append("tspan")
         .attr("dx", "-5")
         .attr("id", "tooltip-gare");
             
@@ -30,7 +35,7 @@ function addTooltipBarChart() {
     text.append("tspan")
         .attr("dx", "-50")
         .attr("dy", "15")
-        .text("Déclarations : ");
+        .text("Déclarations:");
     
     // Le texte pour le nbre de déclarations à la gare sélectionnée
     text.append("tspan")
@@ -80,8 +85,6 @@ barChart = function (barData, barsNumber) {
     svg_bar.append("g")
         .call(yAxis);
 
-    var tooltip = addTooltipBarChart();
-
     var barchart = svg_bar.append("g")
         .attr("fill", "steelblue")
         .selectAll("rect")
@@ -104,8 +107,7 @@ barChart = function (barData, barsNumber) {
     
     barchart.on("mouseover", function (d) {
         tooltip.style("display", null)
-            .style("left", (x(d.key)) + "px")		
-            .style("top", (y(d.value)+20) + "px");
+            .attr("transform", "translate(" + (x(d.key)+x.bandwidth()/2) + "," + y(d.value) + ")");
         d3.select("#tooltip-gare")
         .text(d.key);
         d3.select("#tooltip-decla")
@@ -114,6 +116,8 @@ barChart = function (barData, barsNumber) {
         .on("mouseout", function () {
             tooltip.style("display", "none");
         });
-
+    
+    var tooltip = addTooltipBarChart(svg_bar);
+    
     return svg_bar.node();
 }
