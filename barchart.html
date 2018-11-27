@@ -3,7 +3,7 @@
 
 <head>
     <meta charset=" UTF-8 ">
-    <title> index </title>
+    <title> barchart </title>
     <script src="./lib/d3.js/d3.js"></script>
     <script src="./lib/PapaParse-4.6.0/papaparse.min.js"></script>
 
@@ -27,7 +27,7 @@
     <div id="barchart"></div>
 
     <script src="traitement.js"></script>
-    <script src="graph_yves.js"></script>
+    <script src="graph_bar.js"></script>
     <script>
         function getIndex() {
             var s = document.getElementById("mySelect");
@@ -38,7 +38,7 @@
                 header: true,
                 complete: function (results) {
                     var data = results.data;
-                    var chartData = computeDataBarchart(data, select_value);
+                    var chartData = computeDataBarChart(data, select_value);
                     console.log(chartData);
                     barChart(chartData, 10);
                 }
