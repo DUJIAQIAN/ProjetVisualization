@@ -1,5 +1,5 @@
 var height_bar = 400;
-var width_bar = 600;
+var width_bar = 650;
 var margin_bar = ({ top: 20, right: 0, bottom: 30, left: 40 });
 
 function addTooltipBarChart(svg) {
@@ -27,14 +27,14 @@ function addTooltipBarChart(svg) {
         .attr("transform", "translate(-50, -40)");
     
     // Element pour la gare
-    text.append("tspan")
+    /* text.append("tspan")
         .attr("dx", "-5")
-        .attr("id", "tooltip-gare");
+        .attr("id", "tooltip-gare"); */
             
     // Le texte "Déclarations: "
     text.append("tspan")
-        .attr("dx", "-50")
-        .attr("dy", "15")
+        .attr("dx", "-5")
+        .attr("dy", "5")
         .text("Déclarations:");
     
     // Le texte pour le nbre de déclarations à la gare sélectionnée
@@ -49,14 +49,6 @@ barChart = function (barData, barsNumber) {
 
     //récupération des barsNumber premier éléments de l'array
     data = barData.slice(0, barsNumber);
-
-    d3.select('#barchart svg')
-        .remove();
-
-    let svg_bar = d3.select('#barchart')
-        .append('svg')
-        .attr('width', width_bar)
-        .attr('height', height_bar);
 
     var x = d3.scaleBand()
         .domain(data.map(d => d.key))
@@ -78,9 +70,22 @@ barChart = function (barData, barsNumber) {
         .call(d3.axisLeft(y))
         .call(g => g.select(".domain")
             .remove());
+            
+    d3.select('#barchart svg')
+        .remove();
+    
+    let svg_bar = d3.select('#barchart')
+        .append('svg')
+        .attr('width', width_bar)
+        .attr('height', height_bar);
 
     svg_bar.append("g")
-        .call(xAxis);
+        .call(xAxis)
+        .selectAll("text")
+        .attr("y", 0)
+        .attr("x", 9)
+        .attr("transform", "rotate(45)")
+        .style("text-anchor", "start");
 
     svg_bar.append("g")
         .call(yAxis);
@@ -108,8 +113,7 @@ barChart = function (barData, barsNumber) {
     barchart.on("mouseover", function (d) {
         tooltip.style("display", null)
             .attr("transform", "translate(" + (x(d.key)+x.bandwidth()/2) + "," + y(d.value) + ")");
-        d3.select("#tooltip-gare")
-        .text(d.key);
+
         d3.select("#tooltip-decla")
         .text(d.value);
     })
