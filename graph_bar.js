@@ -1,46 +1,17 @@
 var height_bar = 400;
 var width_bar = 650;
-var margin_bar = ({ top: 20, right: 0, bottom: 30, left: 40 });
+var margin_bar = ({ top: 20, right: 30, bottom: 90, left: 40 });
 
 function addTooltipBarChart(svg) {
-        
-    var tooltip = svg.append("g")
-            .attr("id", "tooltip")
-            .style("display", "none");
-        
-    // Le tooltip en lui-même avec sa pointe vers le bas
-    // Il faut le dimensionner en fonction du contenu
-    tooltip.append("polyline")
-        .attr("points","0,0 0,40 55,40 60,45 65,40 120,40 120,0 0,0")
-        .style("fill", "#fafafa")
-        .style("stroke","#3498db")
-        .style("opacity","0.9")
-        .style("stroke-width","1")
-        .attr("transform", "translate(-60, -55)");
 
-    // Cet élément contiendra tout notre texte
-    var text = tooltip.append("text")
-        .style("font-size", "13px")
-        .style("font-family", "Segoe UI")
-        .style("color", "#333333")
-        .style("fill", "#333333")
-        .attr("transform", "translate(-50, -40)");
-    
-    // Element pour la gare
-    /* text.append("tspan")
-        .attr("dx", "-5")
-        .attr("id", "tooltip-gare"); */
-            
-    // Le texte "Déclarations: "
-    text.append("tspan")
-        .attr("dx", "-5")
-        .attr("dy", "5")
-        .text("Déclarations:");
-    
-    // Le texte pour le nbre de déclarations à la gare sélectionnée
-    text.append("tspan")
-        .attr("id", "tooltip-decla")
-        .style("font-weight", "bold");
+    var tooltip = d3.select("#barchart")
+        .append("div")
+        .attr("id", "tooltip")
+        .style("position", "absolute")
+        .style("background", "#fafafa")
+        .style("border", "1px solid #3498db")
+        .style("padding", "3px")
+        .style("display", "none");
 
     return tooltip;
 }
@@ -70,10 +41,10 @@ barChart = function (barData, barsNumber) {
         .call(d3.axisLeft(y))
         .call(g => g.select(".domain")
             .remove());
-            
+
     d3.select('#barchart svg')
         .remove();
-    
+
     let svg_bar = d3.select('#barchart')
         .append('svg')
         .attr('width', width_bar)
@@ -82,10 +53,10 @@ barChart = function (barData, barsNumber) {
     svg_bar.append("g")
         .call(xAxis)
         .selectAll("text")
-        .attr("y", 0)
+        .attr("y", 10)
         .attr("x", 9)
-        .attr("transform", "rotate(45)")
-        .style("text-anchor", "start");
+        .attr("transform", "rotate(-35)")
+        .style("text-anchor", "end");
 
     svg_bar.append("g")
         .call(yAxis);
@@ -97,7 +68,7 @@ barChart = function (barData, barsNumber) {
         .enter()
         .append("rect")
         .attr("x", d => x(d.key))
-        .attr("y", d => y(0))
+        .attr("y", y(0))
         .attr("width", x.bandwidth())
         .attr("height", 0)
 
@@ -109,19 +80,24 @@ barChart = function (barData, barsNumber) {
         })
         .attr("y", d => y(d.value))
         .attr("height", d => y(0) - y(d.value));
-    
-    barchart.on("mouseover", function (d) {
-        tooltip.style("display", null)
-            .attr("transform", "translate(" + (x(d.key)+x.bandwidth()/2) + "," + y(d.value) + ")");
 
-        d3.select("#tooltip-decla")
-        .text(d.value);
+    barchart.on("mouseover", function () {
+        tooltip.style("display", null);
+        d3.select(this).attr("fill","#1c437d");
+        
     })
         .on("mouseout", function () {
             tooltip.style("display", "none");
+            d3.select(this).attr("fill","steelblue");
+        })
+        .on("mousemove", function (d) {
+            tooltip.style("display", null)
+                .html("<strong>" + d.key + "</strong><br/>Objets:<strong>" + d.value + "</strong>")
+                .style("left", (d3.event.pageX + 10) + "px")
+                .style("top", (d3.event.pageY - 35) + "px");
         });
-    
+
     var tooltip = addTooltipBarChart(svg_bar);
-    
+
     return svg_bar.node();
 }
