@@ -1,34 +1,21 @@
-// Organiser le structure de données
-function traitement(data,mois,annee) {
-    var donnees = {};
-    for (var j = 0; j < annee.length; j++) {
-        var objMois = {};
-        for (var k = 0; k < mois.length; k++) {
-            var dic = [];
-            for (var i = 1; i < 2; i++) {
-                var item = data[i];
-                var itemAnnee = item.Annee;
-                var itemMois = item.Mois;
-//               console.log(item.Annee);
-                var objet = {
-                    "time": item.Annee,
-                    "gare": item.Gare,
-                    "nature": item.Nature,
-                    "type": item.Type
-                };
-//                 console.log(objet);
-                if (itemAnnee == annee[j] && itemMois == mois[k]) {
-                   
-                    dic.push(objet);
-                    objMois[itemMois] = dic;
-                     console.log(objMois)
+
+function computeDataTreemap(data, year){
+    
+            let neste_data = d3.nest()
+            .key(function(d){return d.Annee})
+            .key(function(d){return d.Type})
+            .rollup(function(v) { return v.length; })
+            .entries(data);
+
+            var data_treemap=[];
+            for(let i=0; i<neste_data.length;i++){
+                if(neste_data[i].key== year){
+                    let size = neste_data[i].values.length;
+                    let reData = neste_data[i].values;
+                    for(let j=0; j<size;j++){
+                         data_treemap.push({"name":reData[j].key, "value":reData[j].value}) ;
+                    }            
                 }
             }
-        }
-
-        //donnees[annee[j]] = objMois;
-       // console.log(donnees);
-    }
-
-//    return donnees;
+            return data_treemap;
 }
