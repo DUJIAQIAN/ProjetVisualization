@@ -1,24 +1,15 @@
 //traitement des données pour qu'elles soient exploitables par le bar chart de Yves
-function computeDataBarChart(data, year) {
-    var index=-1, i=0;
+function computeDataBarChart(data) {
     var chartData;
     var nestedData;
 
     //enregistrer les gares et leurs nombres d'objets trouvés dans chartData
     var nestedData = d3.nest()
-        .key(function (d) { return d.Annee; })
         .key(function (d) { return d.Gare; })
         .rollup(function(v){return v.length})
         .entries(data);
 
-    while(i<nestedData.length && index==-1){
-        if(nestedData[i].key==year)
-            index = i;
-        i++;
-    }
-
-    chartData = nestedData[index].values
-                .sort(function(a, b) {
+    chartData = nestedData.sort(function(a, b) {
                     return b.value - a.value;
                 });
 
