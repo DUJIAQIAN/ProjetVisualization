@@ -1,7 +1,6 @@
 //traitement des données pour qu'elles soient exploitables par le bar chart de Yves
 function computeDataBarChart(data) {
     var chartData;
-    var nestedData;
 
     //enregistrer les gares et leurs nombres d'objets trouvés dans chartData
     var chartData = d3.nest()
@@ -22,7 +21,6 @@ function computeDataLineChart(data){
         .sortKeys(d3.ascending)
         .rollup(function(v) { return v.length; })
         .entries(data);
-    console.log(nest_mois);
 
     return nest_mois;
 }
