@@ -1,16 +1,3 @@
-
-function computeDataTreemap(data, year){
-    
-            let neste_data = d3.nest()
-            .key(function(d){return d.Annee})
-            .key(function(d){return d.Type})
-            .rollup(function(v) { return v.length; })
-            .entries(data);
-
-<<<<<<< HEAD
-    return donnees;
-}
-
 //traitement des données pour qu'elles soient exploitables par le bar chart de Yves
 function computeDataBarChart(data, year) {
     var index=-1, i=0;
@@ -53,17 +40,26 @@ function computeDataLineChart(data, year){
 
     return nest_mois;
 }
-=======
-            var data_treemap=[];
-            for(let i=0; i<neste_data.length;i++){
-                if(neste_data[i].key== year){
-                    let size = neste_data[i].values.length;
-                    let reData = neste_data[i].values;
-                    for(let j=0; j<size;j++){
-                         data_treemap.push({"name":reData[j].key, "value":reData[j].value}) ;
-                    }            
-                }
-            }
-            return data_treemap;
+
+
+
+function computeDataTreemap(data, year){
+    
+    let neste_data = d3.nest()
+    .key(function(d){return d.Annee})
+    .key(function(d){return d.Type})
+    .rollup(function(v) { return v.length; })
+    .entries(data);
+
+    var data_treemap=[];
+    for(let i=0; i<neste_data.length;i++){
+        if(neste_data[i].key== year){
+            let size = neste_data[i].values.length;
+            let reData = neste_data[i].values;
+            for(let j=0; j<size;j++){
+                    data_treemap.push({"name":reData[j].key, "value":reData[j].value}) ;
+            }            
+        }
+    }
+    return data_treemap;
 }
->>>>>>> 170b860dafbf38be315f5dfd19af25b701723a31

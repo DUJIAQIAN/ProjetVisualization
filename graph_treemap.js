@@ -1,4 +1,4 @@
-let width_treemap=1000;
+let width_treemap=1500;
 let height_treemap=500;
 
 function treemap_graphic(data_treemap,select_value){
@@ -8,7 +8,9 @@ function treemap_graphic(data_treemap,select_value){
         return d3.hsl(delta*i, 0.7, 0.6);
     };
 
-    let svg = d3.select('body').append('svg');
+    d3.select('#treemap svg')
+        .remove();
+    let svg = d3.select('#treemap').append('svg');
         svg.attr('width', width_treemap)
             .attr('height', height_treemap);
 
@@ -16,6 +18,8 @@ function treemap_graphic(data_treemap,select_value){
         name : select_value,
         "children" :data_treemap
     };
+    
+    
    
  //Générer la hiérarchie des données
     var root = d3.hierarchy(data)
