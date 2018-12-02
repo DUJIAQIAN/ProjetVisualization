@@ -29,17 +29,18 @@
         <div class="row">
             <div id="linechart" class="col-lg-6"></div>
             <div id="barchart" class="col-lg-6"></div>
+            <div id="treemap"></div>
             
         </div>
     </div>
     <script src="traitement.js"></script>
     <script src="graph_bar.js"></script>
     <script src="graph_line.js"></script>
+    <script src="graph_treemap.js"></script>
     <script>
         function getIndex() {
             var s = document.getElementById("mySelect");
             var select_value = s.options[s.selectedIndex].value;
-
             Papa.parse('./data_v4.csv', {
                 download: true,
                 header: true,
@@ -54,6 +55,9 @@
                     var lineData = computeDataLineChart(data, select_value);
                     console.log(lineData)
                     lineChart(lineData);
+
+                    var treemapData = computeDataTreemap(data, select_value);
+                    treemap_graphic(treemapData, select_value);
                 }
             });
         } 
