@@ -4,30 +4,25 @@ function computeDataBarChart(data) {
     var nestedData;
 
     //enregistrer les gares et leurs nombres d'objets trouvés dans chartData
-    var nestedData = d3.nest()
+    var chartData = d3.nest()
         .key(function (d) { return d.Gare; })
         .rollup(function(v){return v.length})
-        .entries(data);
-
-    chartData = nestedData.sort(function(a, b) {
-                    return b.value - a.value;
-                });
+        .entries(data)
+        .sort(function(a, b) {
+            return d3.descending(a.value, b.value);
+        });
 
     return chartData;
 }
 
-function computeDataLineChart(data, year){
-    let nest_annee = d3.nest()
-        .key(function(d){return d.Annee})
-        .object(data);
-
-    //console.log(nest_annee)
+function computeDataLineChart(data){
 
     let nest_mois = d3.nest()
         .key(function(d){return d.Date})
         .sortKeys(d3.ascending)
         .rollup(function(v) { return v.length; })
-        .entries(nest_annee[year]);
+        .entries(data);
+    console.log(nest_mois);
 
     return nest_mois;
 }

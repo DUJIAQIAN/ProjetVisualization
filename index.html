@@ -55,10 +55,6 @@
         </div>
     </div> 
         
-    
-        
-
-
     <script src="traitement.js"></script>
     <script src="graph_bar.js"></script>
     <script src="graph_line.js"></script>
@@ -78,11 +74,11 @@
                     //console.log(chartData);
                     barChart(chartData, 10);
 
-                    /* var lineData = computeDataLineChart(data, select_value);
-                    console.log(lineData)
+                    var lineData = computeDataLineChart(data);
+                    console.log(lineData);
                     lineChart(lineData);
 
-                    var treemapData = computeDataTreemap(data, select_value);
+                    /*var treemapData = computeDataTreemap(data, select_value);
                     treemap_graphic(treemapData, select_value); */
                 }
             });
