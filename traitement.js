@@ -1,33 +1,3 @@
-// Organiser le structure de données
-function traitement(data) {
-    var donnees = {};
-    for (var j = 0; j < annee.length; j++) {
-        var objMois = {};
-        for (var k = 0; k < mois.length; k++) {
-            var dic = [];
-            for (var i = 1; i < data.length; i++) {
-                var item = data[i];
-                var itemAnnee = item[0].slice(0, 4);
-                var itemMois = item[0].slice(5, 7);
-                var objet = {
-                    "time": item[0],
-                    "gare": item[1],
-                    "nature": item[2],
-                    "type": item[3]
-                };
-                if (itemAnnee == annee[j] && itemMois == mois[k]) {
-                    dic.push(objet);
-                    objMois[itemMois] = dic;
-                }
-            }
-        }
-
-        donnees[annee[j]] = objMois;
-    }
-
-    return donnees;
-}
-
 //traitement des données pour qu'elles soient exploitables par le bar chart de Yves
 function computeDataBarChart(data, year) {
     var index=-1, i=0;
@@ -69,4 +39,27 @@ function computeDataLineChart(data, year){
         .entries(nest_annee[year]);
 
     return nest_mois;
+}
+
+
+
+function computeDataTreemap(data, year){
+    
+    let neste_data = d3.nest()
+    .key(function(d){return d.Annee})
+    .key(function(d){return d.Type})
+    .rollup(function(v) { return v.length; })
+    .entries(data);
+
+    var data_treemap=[];
+    for(let i=0; i<neste_data.length;i++){
+        if(neste_data[i].key== year){
+            let size = neste_data[i].values.length;
+            let reData = neste_data[i].values;
+            for(let j=0; j<size;j++){
+                    data_treemap.push({"name":reData[j].key, "value":reData[j].value}) ;
+            }            
+        }
+    }
+    return data_treemap;
 }
