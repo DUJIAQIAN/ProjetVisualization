@@ -77,11 +77,12 @@
                     barChart(chartData, 10);
 
                     var lineData = computeDataLineChart(data);
-                    console.log(lineData);
-                    //lineChart(lineData);
+                    //console.log(lineData);
+                    lineChart(lineData);
 
-                    /*var treemapData = computeDataTreemap(data, select_value);
-                    treemap_graphic(treemapData, select_value); */
+                    var treemapData = computeDataTreemap(data);
+                    //console.log(treemapData);
+                    treemap_graphic(treemapData, select_value);
                 }
             });
         } 
