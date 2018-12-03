@@ -1,5 +1,5 @@
-var height_bar = 400;
-var width_bar = 650;
+var height_bar = 300;
+var width_bar = 800;
 var margin_bar = ({ top: 20, right: 30, bottom: 90, left: 40 });
 
 function addTooltipBarChart(svg) {
