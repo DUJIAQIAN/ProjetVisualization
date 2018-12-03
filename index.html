@@ -55,10 +55,6 @@
         </div>
     </div> 
         
-    
-        
-
-
     <script src="traitement.js"></script>
     <script src="graph_bar.js"></script>
     <script src="graph_line.js"></script>
@@ -67,22 +63,25 @@
         function getIndex() {
             var s = document.getElementById("mySelect");
             var select_value = s.options[s.selectedIndex].value;
-            Papa.parse('./data_v4.csv', {
+            Papa.parse('data/data'+select_value+'.csv', {
                 download: true,
                 header: true,
                 dynamicTyping: true,
                 fastmode:true,
                 complete: function (results) {
                     var data = results.data;
-                    var barData = computeDataBarChart(data, select_value);
-                    console.log(barData);
-                    barChart(barData, 10);
+                    //console.log(data);
 
-                    var lineData = computeDataLineChart(data, select_value);
-                    console.log(lineData)
+                    var chartData = computeDataBarChart(data);
+                    //console.log(chartData);
+                    barChart(chartData, 10);
+
+                    var lineData = computeDataLineChart(data);
+                    //console.log(lineData);
                     lineChart(lineData);
 
-                    var treemapData = computeDataTreemap(data, select_value);
+                    var treemapData = computeDataTreemap(data);
+                    //console.log(treemapData);
                     treemap_graphic(treemapData, select_value);
                 }
             });
