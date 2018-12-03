@@ -1,4 +1,4 @@
-//traitement des données pour qu'elles soient exploitables par le bar chart de Yves
+//traitement des données pour qu'elles soient exploitables par le bar chart
 function computeDataBarChart(data) {
     var chartData;
 
@@ -14,6 +14,7 @@ function computeDataBarChart(data) {
     return chartData;
 }
 
+//traitement des données pour tracer le lineChart
 function computeDataLineChart(data){
 
     let nest_mois = d3.nest()
@@ -26,24 +27,17 @@ function computeDataLineChart(data){
 }
 
 
-
-function computeDataTreemap(data, year){
+//traitement des données pour dessiner le treemap
+function computeDataTreemap(data){
     
     let neste_data = d3.nest()
-    .key(function(d){return d.Annee})
     .key(function(d){return d.Type})
     .rollup(function(v) { return v.length; })
     .entries(data);
 
     var data_treemap=[];
     for(let i=0; i<neste_data.length;i++){
-        if(neste_data[i].key== year){
-            let size = neste_data[i].values.length;
-            let reData = neste_data[i].values;
-            for(let j=0; j<size;j++){
-                    data_treemap.push({"name":reData[j].key, "value":reData[j].value}) ;
-            }            
-        }
+        data_treemap.push({"name":neste_data[i].key, "value":neste_data[i].value}) ;          
     }
     return data_treemap;
 }
