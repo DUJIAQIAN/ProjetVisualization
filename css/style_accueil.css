@@ -410,25 +410,3 @@ hr {
   font-weight: 600;
   margin: 15px 0;
 }
-
-
-/* Copyrights */
-
-#copyrights {
-  background: #222222;
-  padding: 20px 0;
-  text-align: center;
-  color: #fff;
-}
-
-#copyrights a {
-  color: #f0ad4e;
-}
-
-#copyrights p {
-  margin-bottom: 5px;
-}
-
-.credits {
-  color: #999;
-}

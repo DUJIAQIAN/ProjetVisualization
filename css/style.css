@@ -189,7 +189,7 @@ hr {
 }
 
 .mt {
-	margin-top: 25px;
+	margin-top: 15px;
 }
 
 .mb {
@@ -457,7 +457,7 @@ a.logo span {
 
 .notify-row {
     float: left;
-    margin-top: 15px;
+    margin-top: 5px;
     margin-left: 92px;
 }
 
@@ -956,11 +956,6 @@ PANELS CONFIGURATIONS
 	margin-top: 20px;
 	font-weight: 700;
 	margin-left: 15px;
-}
-.donut-chart h2 {
-	font-weight: 900;
-	color: #FF6B6B;
-	font-size: 38px;
 }
 
 /* Dark Blue*/
