@@ -39,9 +39,11 @@
         *********************************************************************************************************************************************************** -->
     <!--header start-->
     <header class="header black-bg">
-      <!--logo start-->
-      
+      <!--logo start-->        
       <div class="col-lg-6">
+          <div class="sidebar-toggle-box">
+            <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+          </div>
           <a class="logo"><b>PROJET<span>VISUALISATION </span></b></a>
       </div>
       <div class="col-lg-6">
@@ -56,8 +58,22 @@
           </div>
         
       </div>
-
     </header>
+    <!--header end-->
+      <!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+    <!--sidebar start-->
+    <aside>
+        <div id="sidebar" class="nav-collapse ">
+          <!-- sidebar menu start-->
+          <ul class="sidebar-menu" id="nav-accordion">
+           
+          </ul>
+          <!-- sidebar menu end-->
+        </div>
+      </aside>
+      <!--sidebar end-->
     <!-- **********************************************************************************************************************************************************
         MAIN CONTENT
         *********************************************************************************************************************************************************** -->
@@ -126,22 +142,25 @@
       function getIndex() {
           var s = document.getElementById("mySelect");
           var select_value = s.options[s.selectedIndex].value;
-          Papa.parse('./data_v4.csv', {
+          Papa.parse('data/data'+select_value+'.csv', {
               download: true,
               header: true,
               dynamicTyping: true,
               fastmode:true,
               complete: function (results) {
                   var data = results.data;
-                  var barData = computeDataBarChart(data, select_value);
-                  console.log(barData);
-                  barChart(barData, 10);
+                  //console.log(data);
 
-                  var lineData = computeDataLineChart(data, select_value);
-                  console.log(lineData)
+                  var chartData = computeDataBarChart(data);
+                  //console.log(chartData);
+                  barChart(chartData, 10);
+
+                  var lineData = computeDataLineChart(data);
+                  //console.log(lineData);
                   lineChart(lineData);
 
-                  var treemapData = computeDataTreemap(data, select_value);
+                  var treemapData = computeDataTreemap(data);
+                  //console.log(treemapData);
                   treemap_graphic(treemapData, select_value);
               }
           });
