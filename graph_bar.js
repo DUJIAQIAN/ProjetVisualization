@@ -16,7 +16,7 @@ function addTooltipBarChart(svg) {
     return tooltip;
 }
 
-barChart = function (barData, barsNumber) {
+barChart = function (barData, barsNumber,color="steelblue") {
 
     //récupération des barsNumber premier éléments de l'array
     data = barData.slice(0, barsNumber);
@@ -60,9 +60,9 @@ barChart = function (barData, barsNumber) {
 
     svg_bar.append("g")
         .call(yAxis);
-
+    //COULEUR
     var barchart = svg_bar.append("g")
-        .attr("fill", "steelblue")
+        .attr("fill", color)
         .selectAll("rect")
         .data(data)
         .enter()
@@ -70,8 +70,8 @@ barChart = function (barData, barsNumber) {
         .attr("x", d => x(d.key))
         .attr("y", y(0))
         .attr("width", x.bandwidth())
-        .attr("height", 0)
-
+        .attr("height", 0);
+    
     barchart.transition()
         .duration(1500)
         .ease(d3.easeElastic)
@@ -83,12 +83,14 @@ barChart = function (barData, barsNumber) {
 
     barchart.on("mouseover", function () {
         tooltip.style("display", null);
-        d3.select(this).attr("fill","#1c437d");
+        d3.select(this)
+        .attr("stroke", color)
+        .attr("stroke-width", "8");
         
     })
         .on("mouseout", function () {
             tooltip.style("display", "none");
-            d3.select(this).attr("fill","steelblue");
+            d3.select(this).attr("stroke",null);
         })
         .on("mousemove", function (d) {
             tooltip.style("display", null)
