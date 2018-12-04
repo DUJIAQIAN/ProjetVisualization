@@ -1,5 +1,5 @@
-let width_treemap=1500;
-let height_treemap=500;
+let width_treemap=1850;
+let height_treemap=350;
 
 function treemap_graphic(data_treemap,select_value){
 
@@ -36,10 +36,18 @@ function treemap_graphic(data_treemap,select_value){
   
  //Configurer des tailles et des couleurs de rectangles  
   cell.append("rect")
+       .transition()
+       .duration(1500)
+       .ease(d3.easeElastic)
+      .delay(function (data, index) {
+            return index * 100;
+        })
       .attr("width", function(d) { return d.x1 - d.x0; })
       .attr("height", function(d) { return d.y1 - d.y0; })
       .attr("fill", calculerCouleur);
- 
+     
+  
+
   cell.append("title")
       .text(function(d) { return d.data.name + "\n" + d.value; });
  
@@ -50,7 +58,31 @@ function treemap_graphic(data_treemap,select_value){
       .attr("x", 4)
       .attr("dy", "1.5em")
       .text(function(d) { return d; });
-
-
+  
+//Animation
+  cell.on("mouseover", function () {
+        d3.select(this).select("text").attr("fill", "#1c437d")
+                                      .style("font-size", "20px");
+        
+        d3.select(this).select("rect").attr("rx", "15")
+                                      .attr("ry", "15")    
+                                      .attr("stroke", "#fff")
+                                      .attr("stroke-width", "8");
+     
+                       ;     
+      })
+     .on("mouseout", function () {
+        d3.select(this).select("text").attr("fill", "black")
+                                      .style("font-size", "15px");
+       
+        d3.select(this).select("rect").attr("rx", "0")
+                                      .attr("ry", "0")  
+                                      .attr("stroke", null);
+      })
+    
+      //On click, actualisation du linechart et du barchart pour n'afficher que des données concernant le type d'objet cliqué
+  cell.on("click",function(d){
+    loadAfterTreemapClick(d.data.name);
+  });
 }
 

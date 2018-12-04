@@ -1,5 +1,5 @@
-var height_bar = 400;
-var width_bar = 650;
+var height_bar = 350;
+var width_bar = 800;
 var margin_bar = ({ top: 20, right: 30, bottom: 90, left: 40 });
 
 function addTooltipBarChart(svg) {
@@ -96,6 +96,11 @@ barChart = function (barData, barsNumber) {
                 .style("left", (d3.event.pageX + 10) + "px")
                 .style("top", (d3.event.pageY - 35) + "px");
         });
+
+    //On click, actualisation du linechart et du treemap pour n'afficher que des données concernant la gare cliquée
+    barchart.on("click",function(d){
+        loadAfterBarChartClick(d.key);
+    });
 
     var tooltip = addTooltipBarChart(svg_bar);
 
