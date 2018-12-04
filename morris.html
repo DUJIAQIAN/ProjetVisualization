@@ -196,7 +196,7 @@
 
       /*Fonction traçant, pour l'année sélectionnée, le linechart et le barchart à partir des enregistrements du type d'objets 
       passée en paramètre */
-      function loadAfterTreemapClick(objectType){
+      function loadAfterTreemapClick(objectType, color){
         var s = document.getElementById("mySelect");
           var select_value = s.options[s.selectedIndex].value;
           Papa.parse('data/data'+select_value+'.csv', {
@@ -214,11 +214,11 @@
 
                   var lineData = computeDataLineChart(objectTypeData);
                   //console.log(lineData);
-                  lineChart(lineData);
+                  lineChart(lineData,color);
 
                   var chartData = computeDataBarChart(objectTypeData);
                   //console.log(chartData);
-                  barChart(chartData, 10);
+                  barChart(chartData, 10,color);
               }
           });
       }
