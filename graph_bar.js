@@ -1,4 +1,4 @@
-var height_bar = 300;
+var height_bar = 350;
 var width_bar = 800;
 var margin_bar = ({ top: 20, right: 30, bottom: 90, left: 40 });
 

@@ -1,6 +1,6 @@
 var height_line = 300;
 var width_line = 800;
-var margin_line = ({ top: 20, right: 30, bottom: 90, left: 40 });
+//var margin_line = ({ top: 20, right: 30, bottom: 90, left: 40 });
 var margin_line = 50;
 
 var dateFormat = d3.timeFormat("%Y-%m");
@@ -28,7 +28,7 @@ function lineChart(data) {
 
     /* Add SVG */
     var svg_line = d3.select("#linechart").append("svg")
-        .attr("width", (width_line+margin_line.top)+"px")
+        .attr("width", (width_line+margin_line)+"px")
         .attr("height", (height_line+margin_line)+"px")
         .append('g')
         .attr("transform", `translate(${margin_line}, ${margin_line})`);
