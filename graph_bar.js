@@ -97,6 +97,11 @@ barChart = function (barData, barsNumber) {
                 .style("top", (d3.event.pageY - 35) + "px");
         });
 
+    //On click, actualisation du linechart et du treemap pour n'afficher que des données concernant la gare cliquée
+    barchart.on("click",function(d){
+        loadAfterBarChartClick(d.key);
+    });
+
     var tooltip = addTooltipBarChart(svg_bar);
 
     return svg_bar.node();
