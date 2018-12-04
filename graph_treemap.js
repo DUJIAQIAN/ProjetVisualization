@@ -39,6 +39,9 @@ function treemap_graphic(data_treemap,select_value){
        .transition()
        .duration(1500)
        .ease(d3.easeElastic)
+      .delay(function (data, index) {
+            return index * 100;
+        })
       .attr("width", function(d) { return d.x1 - d.x0; })
       .attr("height", function(d) { return d.y1 - d.y0; })
       .attr("fill", calculerCouleur);
