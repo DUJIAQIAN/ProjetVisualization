@@ -1,5 +1,5 @@
 let width_treemap=1850;
-let height_treemap=300;
+let height_treemap=400;
 
 function treemap_graphic(data_treemap,select_value){
 
