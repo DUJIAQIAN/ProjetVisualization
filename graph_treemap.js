@@ -59,20 +59,22 @@ function treemap_graphic(data_treemap,select_value){
 //Animation
   cell.on("mouseover", function () {
         d3.select(this).select("text").attr("fill", "#1c437d")
-        d3.select(this).select("text").style("font-size", "20px")
+                                      .style("font-size", "20px");
+        
         d3.select(this).select("rect").attr("rx", "15")
-        d3.select(this).select("rect").attr("ry", "15")    
-        d3.select(this).select("rect").attr("stroke", "#fff")
-        d3.select(this).select("rect").attr("stroke-width", "8")
+                                      .attr("ry", "15")    
+                                      .attr("stroke", "#fff")
+                                      .attr("stroke-width", "8");
      
                        ;     
       })
      .on("mouseout", function () {
         d3.select(this).select("text").attr("fill", "black")
-        d3.select(this).select("text").style("font-size", "15px")
+                                      .style("font-size", "15px");
+       
         d3.select(this).select("rect").attr("rx", "0")
-        d3.select(this).select("rect").attr("ry", "0")  
-        d3.select(this).select("rect").attr("stroke", null)
+                                      .attr("ry", "0")  
+                                      .attr("stroke", null);
       })
 }
 
