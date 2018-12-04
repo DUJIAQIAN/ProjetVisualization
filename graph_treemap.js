@@ -51,6 +51,11 @@ function treemap_graphic(data_treemap,select_value){
       .attr("dy", "1.5em")
       .text(function(d) { return d; });
 
+  //On click, actualisation du linechart et du barchart pour n'afficher que des données concernant le type d'objet cliqué
+  cell.on("click",function(d){
+    loadAfterTreemapClick(d.data.name);
+  });
+
 
 }
 

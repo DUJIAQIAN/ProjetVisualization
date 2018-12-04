@@ -95,7 +95,7 @@
                                   <option value="2017">2017</option>
                                   <option value="2018">2018</option>
                               </select>
-                              <input type="button" onclick="getIndex()" value="Submit">
+                              <input type="button" onclick="loadGraphs()" value="Submit">
                           </form>
                   </div> 
               </div>
@@ -139,7 +139,8 @@
   <script src="graph_treemap.js"></script>
 
   <script>
-      function getIndex() {
+      //Load the graphs
+      function loadGraphs() {
           var s = document.getElementById("mySelect");
           var select_value = s.options[s.selectedIndex].value;
           Papa.parse('data/data'+select_value+'.csv', {
@@ -164,8 +165,67 @@
                   treemap_graphic(treemapData, select_value);
               }
           });
-      } 
-      getIndex();
+      }
+       
+      loadGraphs();
+
+      /*Fonction traçant, pour l'année sélectionnée, le linechart et le treemap à partir des enregistrements de la gare 
+      passée en paramètre */
+      function loadAfterBarChartClick(gare){
+        var s = document.getElementById("mySelect");
+          var select_value = s.options[s.selectedIndex].value;
+          Papa.parse('data/data'+select_value+'.csv', {
+              download: true,
+              header: true,
+              dynamicTyping: true,
+              fastmode:true,
+              complete: function (results) {
+                  var data = results.data;
+                  //console.log(data);
+
+                  //Récupération des enregistrement concernant la gare passée en paramètre
+                  var gareData = getGareData(data,gare);
+                  //console.log(gareData);
+
+                  var lineData = computeDataLineChart(gareData);
+                  //console.log(lineData);
+                  lineChart(lineData);
+
+                  var treemapData = computeDataTreemap(gareData);
+                  //console.log(treemapData);
+                  treemap_graphic(treemapData, select_value);
+              }
+          });
+      }
+
+      /*Fonction traçant, pour l'année sélectionnée, le linechart et le barchart à partir des enregistrements du type d'objets 
+      passée en paramètre */
+      function loadAfterTreemapClick(objectType){
+        var s = document.getElementById("mySelect");
+          var select_value = s.options[s.selectedIndex].value;
+          Papa.parse('data/data'+select_value+'.csv', {
+              download: true,
+              header: true,
+              dynamicTyping: true,
+              fastmode:true,
+              complete: function (results) {
+                  var data = results.data;
+                  //console.log(data);
+
+                  //Récupération des enregistrement concernant la gare passée en paramètre
+                  var objectTypeData = getObjectTypeData(data,objectType);
+                  //console.log(objectData);
+
+                  var lineData = computeDataLineChart(objectTypeData);
+                  //console.log(lineData);
+                  lineChart(lineData);
+
+                  var chartData = computeDataBarChart(objectTypeData);
+                  //console.log(chartData);
+                  barChart(chartData, 10);
+              }
+          });
+      }
   </script>
 
   <!-- js placed at the end of the document so the pages load faster -->
