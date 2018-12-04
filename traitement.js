@@ -26,7 +26,6 @@ function computeDataLineChart(data){
     return nest_mois;
 }
 
-
 //traitement des données pour dessiner le treemap
 function computeDataTreemap(data){
     
@@ -40,4 +39,58 @@ function computeDataTreemap(data){
         data_treemap.push({"name":neste_data[i].key, "value":neste_data[i].value}) ;          
     }
     return data_treemap;
+}
+
+//Récupération des données ne concernantn qu'une gare
+function getGareData(data,gare){
+    
+    var gareData;
+
+    /*répartition des données en deux tas: 
+        -Celles concernant la gare passée en paramètre
+        -Les autres
+    */
+    var nested = d3.nest()
+                    .key(function(d){
+                        if(d.Gare==gare)
+                            return d.Gare;
+                        else
+                            return null;
+                    })
+                    .entries(data);
+    
+    //Récupération des données concernant la gare
+    nested.forEach(element => {
+    if(element.key=gare)
+        gareData = element.values;
+    });
+
+    return gareData;
+}
+
+//Récupération des données ne concernantn qu'un type d'objet
+function getObjectTypeData(data,objectType){
+    
+    var objectTypeData;
+
+    /*répartition des données en deux tas: 
+        -Celles concernant la objectType passée en paramètre
+        -Les autres
+    */
+    var nested = d3.nest()
+                    .key(function(d){
+                        if(d.Type==objectType)
+                            return d.Type;
+                        else
+                            return null;
+                    })
+                    .entries(data);
+    
+    //Récupération des données concernant la gare
+    nested.forEach(element => {
+    if(element.key=objectType)
+        objectTypeData = element.values;
+    });
+
+    return objectTypeData;
 }
