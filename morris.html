@@ -44,17 +44,17 @@
           <div class="sidebar-toggle-box">
             <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
           </div>
-          <a class="logo"><b>PROJET<span>VISUALISATION </span></b></a>
+          <a href="index.html" class="logo"><b>PROJET<span>VISUALISATION </span></b></a>
       </div>
       <div class="col-lg-6">
           <div class="col-lg-3">
-              <a class="logo"><b>Jiaqian<span>DU</span></b></a>
+              <a class="logo"><b>Jiaqian <span>DU</span></b></a>
           </div>
           <div class="col-lg-4">
-              <a class="logo"><b>Demont<span>ZHANG</span></b></a>
+              <a class="logo"><b>Demont <span>ZHANG</span></b></a>
           </div>
           <div class="col-lg-4">
-              <a class="logo"><b>Yves<span>OBAME EDOU</span></b></a>
+              <a class="logo"><b>Yves <span>OBAME EDOU</span></b></a>
           </div>
         
       </div>
@@ -82,26 +82,22 @@
       <section class="wrapper site-min-height">
         <!-- page start-->
         <div id="morris">
+          <form name="form1" id="form1" style="font-size: 150%">
+              <i class="fa fa-angle-right"></i> Selectionner une année:
+              <select id="mySelect" name="mySelect">
+                  <option value="2013">2013</option>
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+                  <option value="2017">2017</option>
+                  <option value="2018">2018</option>
+              </select>
+              <button type="button" class="btn btn-dark" onclick="loadGraphs()" >Submit</button>
+          </form>
           <div class="row mt">
-              <div class="col-xl-12">
-                  <div class="col-lg-11">
-                      <form name="form1" id="form1">
-                              Selectionner une année:
-                              <select id="mySelect" name="mySelect">
-                                  <option value="2013">2013</option>
-                                  <option value="2014">2014</option>
-                                  <option value="2015">2015</option>
-                                  <option value="2016">2016</option>
-                                  <option value="2017">2017</option>
-                                  <option value="2018">2018</option>
-                              </select>
-                              <input type="button" onclick="loadGraphs()" value="Submit">
-                          </form>
-                  </div> 
-              </div>
             <div class="col-lg-12">
               <div class="content-panel">
-                <h4><i class="fa fa-angle-right"></i> Chart Example 1</h4>
+                <h4><i class="fa fa-angle-right"></i> Déclations par types d'objets</h4>
                 <div class="panel-body">
                   <div id="treemap" ></div>
                 </div>
@@ -111,7 +107,7 @@
           <div class="row mt">
             <div class="col-lg-6">
                   <div class="content-panel">
-                    <h4><i class="fa fa-angle-right"></i> Chart Example 2</h4>
+                    <h4><i class="fa fa-angle-right"></i> Top 10 des gares ayant le plus de déclarations</h4>
                     <div class="panel-body">
                       <div id="barchart"></div>
                     </div>
@@ -119,7 +115,7 @@
               </div>
             <div class="col-lg-6">
               <div class="content-panel">
-                <h4><i class="fa fa-angle-right"></i> Chart Example 3</h4>
+                <h4><i class="fa fa-angle-right"></i> Evolution des déclations de pertes</h4>
                 <div class="panel-body">
                   <div id="linechart"></div>
                 </div>
