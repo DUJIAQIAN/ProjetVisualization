@@ -7,7 +7,7 @@ var dateFormat = d3.timeFormat("%Y-%m");
 var parseDate = d3.timeParse("%Y-%m");
 
 
-function lineChart(data) {
+function lineChart(data,color="steelblue") {
     /* Format Data */
     data.forEach(function(d) { 
         d.key = parseDate(d.key);
@@ -42,7 +42,7 @@ function lineChart(data) {
     var linePath = svg_line.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "steelblue")
+        .attr("stroke", color)
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 1.5)
@@ -84,7 +84,7 @@ function lineChart(data) {
         
         // Le cercle extérieur bleu clair
         tooltip.append("circle")
-            .attr("fill", "#CCE5F6")
+            .attr("fill", color)
             .attr("r", 10);
 
         // Le cercle intérieur bleu foncé
@@ -99,7 +99,7 @@ function lineChart(data) {
         tooltip.append("polyline")
             .attr("points","0,0 0,40 55,40 60,45 65,40 120,40 120,0 0,0")
             .style("fill", "#fafafa")
-            .style("stroke","#3498db")
+            .style("stroke",color)
             .style("opacity","0.9")
             .style("stroke-width","1")
             .attr("transform", "translate(-60, -55)");
