@@ -1,5 +1,5 @@
-let width_treemap=1500;
-let height_treemap=500;
+let width_treemap=1850;
+let height_treemap=350;
 
 function treemap_graphic(data_treemap,select_value){
 
@@ -58,7 +58,7 @@ function treemap_graphic(data_treemap,select_value){
       .attr("x", 4)
       .attr("dy", "1.5em")
       .text(function(d) { return d; });
-
+  
 //Animation
   cell.on("mouseover", function () {
         d3.select(this).select("text").attr("fill", "#1c437d")
