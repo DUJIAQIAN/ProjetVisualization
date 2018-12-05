@@ -61,7 +61,7 @@ function treemap_graphic(data_treemap, select_value) {
         .attr("dy", "1.5em")
         .text(function (d) { return d; });
 
-    //Animation
+    //Gestion des évènements
     cell.on("mouseover", function () {
         d3.select(this).select("text").attr("fill", "#1c437d")
             .style("font-size", "20px");
