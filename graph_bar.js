@@ -2,21 +2,55 @@ var height_bar = 350;
 var width_bar = 800;
 var margin_bar = ({ top: 20, right: 30, bottom: 90, left: 40 });
 
-function addTooltipBarChart(svg) {
+function addTooltipBarChart(svg, color) {
 
-    var tooltip = d3.select("#barchart")
-        .append("div")
+    var tooltip = svg.append("g")
         .attr("id", "tooltip")
-        .style("position", "absolute")
-        .style("background", "#fafafa")
-        .style("border", "1px solid #3498db")
-        .style("padding", "3px")
         .style("display", "none");
+
+    var x_start = -25;
+    // Le tooltip en lui-même avec sa pointe vers le bas
+    // Il faut le dimensionner en fonction du contenu
+    tooltip.append("polyline")
+        .attr("points", "" + x_start + ",0 " + x_start + ",40 55,40 60,45 65,40 " + (120 - x_start) + ",40 " + (120 - x_start) + ",0 " + x_start + ",0")
+        .style("fill", "#fafafa")
+        .style("stroke", color)
+        .style("opacity", "0.9")
+        .style("stroke-width", "1")
+        .attr("transform", "translate(-60, -55)");
+
+    // Cet élément contiendra tout notre texte
+    var text = tooltip.append("text")
+        .style("font-size", "13px")
+        .style("font-family", "Segoe UI")
+        .style("color", "#333333")
+        .style("fill", "#333333")
+        .attr("transform", "translate(-50, -40)");
+
+    var x_start_span = x_start - 5;
+    // Element pour la gare avec positionnement spécifique
+    text.append("tspan")
+        .attr("dx", "-5")
+        .attr('x', x_start)
+        .attr("id", "tooltip-gare");
+
+
+    // Le texte "Cours : "
+    text.append("tspan")
+        .attr('x', x_start)
+        .attr('dx',"-9")
+        .attr("dy", "15")
+        .text(" Déclarations : ");
+
+    // Le texte pour la valeur à la gare sélectionnée
+    text.append("tspan")
+        .attr("id", "tooltip-val")
+        .style("font-weight", "bold");
 
     return tooltip;
 }
 
-barChart = function (barData, barsNumber,color="steelblue") {
+barChart = function (barData, barsNumber, color = "steelblue") {
 
     //récupération des barsNumber premier éléments de l'array
     data = barData.slice(0, barsNumber);
@@ -71,7 +105,10 @@ barChart = function (barData, barsNumber,color="steelblue") {
         .attr("y", y(0))
         .attr("width", x.bandwidth())
         .attr("height", 0);
-    
+
+    barchart.append("title")
+        .text(function (d) { return d.key + "\n" + d.value; });
+
     barchart.transition()
         .duration(1500)
         .ease(d3.easeElastic)
@@ -81,30 +118,32 @@ barChart = function (barData, barsNumber,color="steelblue") {
         .attr("y", d => y(d.value))
         .attr("height", d => y(0) - y(d.value));
 
-    barchart.on("mouseover", function () {
-        tooltip.style("display", null);
+    //var tooltip = addTooltipBarChart(svg_bar, color);
+
+    barchart.on("mouseover", function (d) {
+        //tooltip.style("display", null);
+
         d3.select(this)
-        .attr("stroke", color)
-        .attr("stroke-width", "8");
-        
+            .attr("stroke", color)
+            .attr("stroke-width", "8");
+
     })
         .on("mouseout", function () {
-            tooltip.style("display", "none");
-            d3.select(this).attr("stroke",null);
+            //tooltip.style("display", "none");
+            d3.select(this).attr("stroke", null);
         })
         .on("mousemove", function (d) {
-            tooltip.style("display", null)
-                .html("<strong>" + d.key + "</strong><br/>Objets:<strong>" + d.value + "</strong>")
-                .style("left", (d3.event.pageX + 10) + "px")
-                .style("top", (d3.event.pageY - 35) + "px");
+            /* tooltip.attr("transform", "translate(" + (x(d.key) + x.bandwidth() / 2) + "," + y(d.value) + ")");
+            d3.select('#tooltip-gare')
+                .text(d.key);
+            d3.select('#tooltip-val')
+                .text(d.value); */
         });
 
     //On click, actualisation du linechart et du treemap pour n'afficher que des données concernant la gare cliquée
-    barchart.on("click",function(d){
+    barchart.on("click", function (d) {
         loadAfterBarChartClick(d.key);
     });
-
-    var tooltip = addTooltipBarChart(svg_bar);
 
     return svg_bar.node();
 }
