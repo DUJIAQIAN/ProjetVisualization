@@ -19,8 +19,6 @@ function treemap_graphic(data_treemap, select_value) {
         "children": data_treemap
     };
 
-
-
     //Générer la hiérarchie des données
     var root = d3.hierarchy(data)
         .sum(function (d) { return d.value; })
