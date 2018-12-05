@@ -80,6 +80,7 @@ function lineChart(data,color="steelblue") {
         .domain([0, d3.max(data, d => d.value)])
         .range([height_line-margin_line, 0]);
 
+    //supprime le graphique précédent
     d3.select('#linechart svg')
         .remove();
 
@@ -91,11 +92,13 @@ function lineChart(data,color="steelblue") {
         .attr("transform", `translate(${margin_line}, ${margin_line})`);
 
     /* Add line into SVG */
+    //Instanciation de l'objet line 
     var line = d3.line()
         .x(d => xScale(d.key))
         .y(d => yScale(d.value))
         .curve(d3.curveMonotoneX);
     
+    //Affectation des données 
     var linePath = svg_line.append("path")
         .datum(data)
         .attr("fill", "none")
@@ -105,6 +108,7 @@ function lineChart(data,color="steelblue") {
         .attr("stroke-width", 1.5)
         .attr("d", line);
 
+    //Animation pour tracer la ligne 
     var linePathLength = linePath.node().getTotalLength();
         linePath
         .attr("stroke-dasharray", linePathLength)
@@ -113,29 +117,6 @@ function lineChart(data,color="steelblue") {
             .duration(2000)
             .ease(d3.easeLinear)
             .attr("stroke-dashoffset", 0);
-
-    /* Add Axis into SVG */
-    var xAxis = d3.axisBottom(xScale).ticks(5);
-    var yAxis = d3.axisLeft(yScale).ticks(5);
-
-    svg_line.append("g")
-    .attr("class", "x axis")
-    .attr("transform", `translate(0, ${height_line-margin_line})`)
-    .call(xAxis);
-
-    svg_line.append("g")
-    .attr("class", "y axis")
-    .call(yAxis)
-    .append('text')
-    .attr("y", 15)
-    .attr("transform", "rotate(-90)")
-    .attr("fill", "#000")
-    .text("Déclaration de pertes");
-
-
-    var tooltip = addTooltip(svg_line, color);
-    var bisectDate = d3.bisector(function(d) { return d.key; }).left;
-
 
     /* Add circle */ 
     var circle = svg_line.selectAll("dot").data(data)
@@ -146,8 +127,33 @@ function lineChart(data,color="steelblue") {
         .attr("cx", function(d){return xScale(d.key)})
         .attr("cy", function(d){return yScale(d.value);})
         .attr("class", "dot");
-  
 
+    /* Add Axis into SVG */
+    var xAxis = d3.axisBottom(xScale).ticks(5);
+    var yAxis = d3.axisLeft(yScale).ticks(5);
+
+    //Ajout de l'axe x 
+    svg_line.append("g")
+    .attr("class", "x axis")
+    .attr("transform", `translate(0, ${height_line-margin_line})`)
+    .call(xAxis);
+
+    //Ajout de l'axe y
+    svg_line.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append('text')
+    .attr("y", 15)
+    .attr("transform", "rotate(-90)")
+    .attr("fill", "#000")
+    .text("Déclaration de pertes");
+
+    //instanciation du tooltip
+    var tooltip = addTooltip(svg_line, color);
+    var bisectDate = d3.bisector(function(d) { return d.key; }).left;
+
+
+    //Ajout des animations 
     svg_line.append("rect")
     .attr("class", "overlay")
     .attr("width", width_line)
