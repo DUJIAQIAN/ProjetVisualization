@@ -1,6 +1,6 @@
 var height_bar = 350;
 var width_bar = 800;
-var margin_bar = ({ top: 20, right: 30, bottom: 90, left: 40 });
+var margin_bar = ({ top: 50, right: 50, bottom: 90, left: 50 });
 
 function addTooltipBarChart(svg, color) {
 
@@ -106,8 +106,8 @@ barChart = function (barData, barsNumber, color = "steelblue") {
         .attr("width", x.bandwidth())
         .attr("height", 0);
 
-    barchart.append("title")
-        .text(function (d) { return d.key + "\n" + d.value; });
+    /* barchart.append("title")
+        .text(function (d) { return d.key + "\n" + d.value; }); */
 
     barchart.transition()
         .duration(1500)
@@ -118,10 +118,10 @@ barChart = function (barData, barsNumber, color = "steelblue") {
         .attr("y", d => y(d.value))
         .attr("height", d => y(0) - y(d.value));
 
-    //var tooltip = addTooltipBarChart(svg_bar, color);
+    var tooltip = addTooltipBarChart(svg_bar, color);
 
     barchart.on("mouseover", function (d) {
-        //tooltip.style("display", null);
+        tooltip.style("display", null);
 
         d3.select(this)
             .attr("stroke", color)
@@ -129,15 +129,15 @@ barChart = function (barData, barsNumber, color = "steelblue") {
 
     })
         .on("mouseout", function () {
-            //tooltip.style("display", "none");
+            tooltip.style("display", "none");
             d3.select(this).attr("stroke", null);
         })
         .on("mousemove", function (d) {
-            /* tooltip.attr("transform", "translate(" + (x(d.key) + x.bandwidth() / 2) + "," + y(d.value) + ")");
+            tooltip.attr("transform", "translate(" + (x(d.key) + x.bandwidth() / 2) + "," + y(d.value) + ")");
             d3.select('#tooltip-gare')
                 .text(d.key);
             d3.select('#tooltip-val')
-                .text(d.value); */
+                .text(d.value);
         });
 
     //On click, actualisation du linechart et du treemap pour n'afficher que des données concernant la gare cliquée

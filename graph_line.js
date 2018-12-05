@@ -1,7 +1,7 @@
 var height_line = 300;
 var width_line = 800;
 //var margin_line = ({ top: 20, right: 30, bottom: 90, left: 40 });
-var margin_line = 50;
+var margin_line = 65;
 
 var dateFormat = d3.timeFormat("%Y-%m");
 var parseDate = d3.timeParse("%Y-%m");
@@ -28,7 +28,7 @@ function lineChart(data,color="steelblue") {
 
     /* Add SVG */
     var svg_line = d3.select("#linechart").append("svg")
-        .attr("width", (width_line+margin_line)+"px")
+        .attr("width", (width_line+margin_line+20)+"px")
         .attr("height", (height_line+margin_line)+"px")
         .append('g')
         .attr("transform", `translate(${margin_line}, ${margin_line})`);
@@ -97,7 +97,7 @@ function lineChart(data,color="steelblue") {
         // Le tooltip en lui-même avec sa pointe vers le bas
         // Il faut le dimensionner en fonction du contenu
         tooltip.append("polyline")
-            .attr("points","0,0 0,40 55,40 60,45 65,40 120,40 120,0 0,0")
+            .attr("points","0,0 0,40 55,40 60,45 65,40 130,40 130,0 0,0")
             .style("fill", "#fafafa")
             .style("stroke",color)
             .style("opacity","0.9")
