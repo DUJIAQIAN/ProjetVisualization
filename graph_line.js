@@ -21,7 +21,7 @@ function addTooltip(svg, color) {
 
     // Le cercle intérieur bleu foncé
     tooltip.append("circle")
-        .attr("fill", "#3498db")
+        .attr("fill", color)
         .attr("stroke", "#fff")
         .attr("stroke-width", "1.5px")
         .attr("r", 4);
@@ -47,7 +47,8 @@ function addTooltip(svg, color) {
     // Element pour la date avec positionnement spécifique
     text.append("tspan")
         .attr("dx", "-5")
-        .attr("id", "tooltip-date");
+        .attr("id", "tooltip-date")
+        .style("font-weight", "bold");
     
     
     // Le texte "Cours : "
