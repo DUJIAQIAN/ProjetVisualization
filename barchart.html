@@ -33,12 +33,12 @@
             var s = document.getElementById("mySelect");
             var select_value = s.options[s.selectedIndex].value;
 
-            Papa.parse('./data_v4.csv', {
+            Papa.parse('data/data'+select_value+'.csv', {
                 download: true,
                 header: true,
                 complete: function (results) {
                     var data = results.data;
-                    var chartData = computeDataBarChart(data, select_value);
+                    var chartData = computeDataBarChart(data);
                     barChart(chartData, 10);
                 }
             });
